@@ -1,6 +1,12 @@
 #include "src/input.h"
 #include <conio.h>
 
+#ifdef __WATCOMC__
+#define outport  outp
+#define outportb outp
+#define inportb  inp
+#endif
+
 unsigned short keys[0x81];
 
 // faster keyhit detector than kbhit()

@@ -5,6 +5,10 @@
  * necessary math for the raytracer
  */
 
+#ifndef M_PI
+#define M_PI 3.141592654
+#endif
+
 typedef struct
 {
     double m_x;
