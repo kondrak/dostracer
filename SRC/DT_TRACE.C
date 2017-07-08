@@ -11,6 +11,7 @@ static const double AIR_REFRACT   = 1.0;
 static const double GLASS_REFRACT = 2.0;
 
 extern int GRAYSCALE_ON;
+extern int GRAYSCALE_PAL_ON;
 extern int DITHER_ON;
 
 // threshold map for ordered dithering
@@ -282,11 +283,22 @@ int findColor(const double *srcColor)
     int startColor = GRAYSCALE_ON ? 16 : 0;
     int endColor = GRAYSCALE_ON ? 32 : 248; // last 8 colors of default VGA palette are all blacks, hence 248
 
+    int cr = srcColor[0];
+    int cg = srcColor[1];
+    int cb = srcColor[2];
+
+    // utilize full palette if it's set to grayscale and calculate luminance
+    if(GRAYSCALE_PAL_ON)
+    {
+        endColor = 255;
+        cr = cg = cb = 0.2989 * cr + 0.5870 * cg + 0.1140 * cb;
+    }
+
     for (i = startColor; i < endColor; i++)
     {
-        long int r = (long int)(srcColor[0] - (double)VGAPalette[i][0]);
-        long int g = (long int)(srcColor[1] - (double)VGAPalette[i][1]);
-        long int b = (long int)(srcColor[2] - (double)VGAPalette[i][2]);
+        long int r = (long int)(cr - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][0]));
+        long int g = (long int)(cg - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][1]));
+        long int b = (long int)(cb - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][2]));
 
         // sqrt() not needed: it won't change the final evaluation
         long int d = r * r + g * g + b * b;

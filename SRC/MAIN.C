@@ -1,10 +1,15 @@
 #include "src/input.h"
 #include "src/dt_math.h"
 #include "src/dt_trace.h"
+#include <conio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#ifdef __WATCOMC__
+#define outportb outp
+#endif
 
 /*
  * Raytracer for DOS written in C. 
@@ -26,6 +31,7 @@ static const int SCREEN_HEIGHT = 200;
 
 // cmd line controlled settings
 int GRAYSCALE_ON = 0;
+int GRAYSCALE_PAL_ON = 0;
 int DITHER_ON    = 0;
 
 // pointer to VGA memory
@@ -62,15 +68,19 @@ int main(int argc, char **argv)
     for (x = 0; x < argc; x++)
     {
         // grayscale flag
-        if (!strcmp(argv[x], "-g"))
+        if(!strcmp(argv[x], "-g"))
             GRAYSCALE_ON = 1;
 
+        // use a full grayscale palette flag - overrides regular grayscale
+        if(!strcmp(argv[x], "-gp"))
+            GRAYSCALE_PAL_ON = 1;
+
         // dither flag
-        if (!strcmp(argv[x], "-d"))
+        if(!strcmp(argv[x], "-d"))
             DITHER_ON = 1;
 
         // custom fov flag
-        if (!strcmp(argv[x], "-f") && x + 1 < argc)
+        if(!strcmp(argv[x], "-f") && x + 1 < argc)
         {
             if (isdigit(argv[x + 1][0]))
                 fov = atof(argv[x + 1]);
@@ -78,6 +88,14 @@ int main(int argc, char **argv)
     }
 
     setMode(0x13);
+
+    // generate and set a grayscale palette
+    if(GRAYSCALE_PAL_ON)
+    {
+        outportb(0x03c8, 0);
+        for(x = 0; x < 768; ++x)
+            outportb(0x03c9, x/3 >> 2);
+    }
 
     /*** Scene setup ***/
     rtScene.spheres[0].m_origin.m_x = -0.05;

@@ -8,6 +8,8 @@ Extra command line flags:
 
 <code>-g - render in grayscale (16 shades of default VGA palette)</code>
 
+<code>-gp - render in grayscale using full 256 shades of gray (slower!)</code>
+
 <code>-d - enable dithering</code>
 
 ![Screenshot](http://kondrak.info/images/dostrace/dostrace1.png?raw=true)
