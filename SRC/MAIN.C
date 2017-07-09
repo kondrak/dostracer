@@ -107,7 +107,7 @@ int main(int argc, char **argv)
             outportb(0x03c9, x/3 >> 2);
     }
     // use custom palette if standard VGA flag is not set
-    else if(!VGA_PAL_ON)
+    else if(!VGA_PAL_ON && !GRAYSCALE_ON)
     {
         ACTIVE_PALETTE = CustomPalette;
 
