@@ -25,10 +25,12 @@
  */
 
 extern int VGAPalette[][3];
+extern int GrayscalePalette[][3];
 
 static const int SCREEN_WIDTH  = 320;
 static const int SCREEN_HEIGHT = 200;
 
+int (*ACTIVE_PALETTE)[3] = VGAPalette;
 // cmd line controlled settings
 int GRAYSCALE_ON = 0;
 int GRAYSCALE_PAL_ON = 0;
@@ -92,6 +94,8 @@ int main(int argc, char **argv)
     // generate and set a grayscale palette
     if(GRAYSCALE_PAL_ON)
     {
+        ACTIVE_PALETTE = GrayscalePalette;
+
         outportb(0x03c8, 0);
         for(x = 0; x < 768; ++x)
             outportb(0x03c9, x/3 >> 2);
@@ -115,7 +119,7 @@ int main(int argc, char **argv)
     rtScene.spheres[1].m_color[0] = 0xFF;
     rtScene.spheres[1].m_color[1] = 0xFF;
     rtScene.spheres[1].m_color[2] = 0xFF;
-    rtScene.spheres[1].m_reflective = 1;
+    rtScene.spheres[1].m_reflective = 0;
     rtScene.spheres[1].m_refractive = 0;
 
     rtScene.spheres[2].m_origin.m_x = -0.2;

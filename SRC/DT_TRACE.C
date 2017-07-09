@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-extern int VGAPalette[][3];
+extern int (*ACTIVE_PALETTE)[3];
 
 // arbitrary values used for shading and refraction
 static const double AMBIENT       = 0.3;
@@ -157,9 +157,9 @@ int rayTrace(const Ray *r, const Scene *s, const void *currObject, int x, int y)
                 reflectColor = rayTrace(&rl, s, &s->spheres[i], x, y);
 
                 // add reflection to object's color
-                sColor[0] += (double)VGAPalette[reflectColor][0];
-                sColor[1] += (double)VGAPalette[reflectColor][1];
-                sColor[2] += (double)VGAPalette[reflectColor][2];
+                sColor[0] += (double)ACTIVE_PALETTE[reflectColor][0];
+                sColor[1] += (double)ACTIVE_PALETTE[reflectColor][1];
+                sColor[2] += (double)ACTIVE_PALETTE[reflectColor][2];
                 clamp(sColor);
 
                 pointColor = DITHER_ON ? orderedDither(sColor, x, y) : findColor(sColor);
@@ -177,9 +177,9 @@ int rayTrace(const Ray *r, const Scene *s, const void *currObject, int x, int y)
                 refractColor = rayTrace(&rr, s, &s->spheres[i], x, y);
 
                 // make the refracted color 90% bright
-                sColor[0] = 0.90 * (double)VGAPalette[refractColor][0];
-                sColor[1] = 0.90 * (double)VGAPalette[refractColor][1];
-                sColor[2] = 0.90 * (double)VGAPalette[refractColor][2];
+                sColor[0] = 0.90 * (double)ACTIVE_PALETTE[refractColor][0];
+                sColor[1] = 0.90 * (double)ACTIVE_PALETTE[refractColor][1];
+                sColor[2] = 0.90 * (double)ACTIVE_PALETTE[refractColor][2];
 
                 pointColor = DITHER_ON ? orderedDither(sColor, x, y) : findColor(sColor);
             }
@@ -216,9 +216,9 @@ int rayTrace(const Ray *r, const Scene *s, const void *currObject, int x, int y)
                 reflectColor = rayTrace(&rlp, s, &s->planes[i], x, y);
 
                 // make reflected object 70% bright
-                pColor[0] = 0.70 * (double)VGAPalette[reflectColor][0];
-                pColor[1] = 0.70 * (double)VGAPalette[reflectColor][1];
-                pColor[2] = 0.70 * (double)VGAPalette[reflectColor][2];
+                pColor[0] = 0.70 * (double)ACTIVE_PALETTE[reflectColor][0];
+                pColor[1] = 0.70 * (double)ACTIVE_PALETTE[reflectColor][1];
+                pColor[2] = 0.70 * (double)ACTIVE_PALETTE[reflectColor][2];
 
                 pointColor = DITHER_ON ? orderedDither(pColor, x, y) : findColor(pColor);
             }
@@ -296,9 +296,9 @@ int findColor(const double *srcColor)
 
     for (i = startColor; i < endColor; i++)
     {
-        long int r = (long int)(cr - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][0]));
-        long int g = (long int)(cg - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][1]));
-        long int b = (long int)(cb - (GRAYSCALE_PAL_ON ? i : (double)VGAPalette[i][2]));
+        long int r = (long int)(cr - (double)ACTIVE_PALETTE[i][0]);
+        long int g = (long int)(cg - (double)ACTIVE_PALETTE[i][1]);
+        long int b = (long int)(cb - (double)ACTIVE_PALETTE[i][2]);
 
         // sqrt() not needed: it won't change the final evaluation
         long int d = r * r + g * g + b * b;
