@@ -1,14 +1,16 @@
 Raytracer for DOS written in C
 ================
-An example of how raytracing can be done on old DOS computers, written in C and compiled with Turbo C++ 3.1 (project included). Requires DOSBox or a real DOS computer (note: if you actually test it on a real thing be sure to let me know how it performs!).
+An example of how raytracing can be done on old DOS computers. Compileable with either Borland Turbo C++ 3.1 or Open Watcom. Requires DOSBox or a real DOS computer.
 
 Extra command line flags:
 
 <code>-f XX - set fov to XX (default: 45 degrees)</code>
 
-<code>-g - render in grayscale (16 shades of default VGA palette)</code>
+<code>-g - render in grayscale (fast, 16 shades of default VGA palette)</code>
 
 <code>-gp - render in grayscale using full 256 shades of gray (slower!)</code>
+
+<code>-vga - use standard VGA palette (uglier!)</code>
 
 <code>-d - enable dithering</code>
 
