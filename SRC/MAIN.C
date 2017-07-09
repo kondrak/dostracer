@@ -24,8 +24,9 @@
  * Turbo C++ 3.1 ready. Requires large memory model.
  */
 
-extern int VGAPalette[][3];
+extern int CustomPalette[][3];
 extern int GrayscalePalette[][3];
+extern int VGAPalette[][3];
 
 static const int SCREEN_WIDTH  = 320;
 static const int SCREEN_HEIGHT = 200;
@@ -34,7 +35,8 @@ int (*ACTIVE_PALETTE)[3] = VGAPalette;
 // cmd line controlled settings
 int GRAYSCALE_ON = 0;
 int GRAYSCALE_PAL_ON = 0;
-int DITHER_ON    = 0;
+int VGA_PAL_ON = 0;
+int DITHER_ON  = 0;
 
 // pointer to VGA memory
 unsigned char *VGA = (unsigned char *)0xA0000000L;
@@ -77,6 +79,10 @@ int main(int argc, char **argv)
         if(!strcmp(argv[x], "-gp"))
             GRAYSCALE_PAL_ON = 1;
 
+        // use a standard VGA palette instead of the custom one
+        if(!strcmp(argv[x], "-vga"))
+            VGA_PAL_ON = 1;
+
         // dither flag
         if(!strcmp(argv[x], "-d"))
             DITHER_ON = 1;
@@ -100,6 +106,19 @@ int main(int argc, char **argv)
         for(x = 0; x < 768; ++x)
             outportb(0x03c9, x/3 >> 2);
     }
+    // use custom palette if standard VGA flag is not set
+    else if(!VGA_PAL_ON)
+    {
+        ACTIVE_PALETTE = CustomPalette;
+
+        outportb(0x03c8, 0);
+        for(x = 0; x < 256; ++x)
+        {
+            outportb(0x03c9, CustomPalette[x][0] >> 2);
+            outportb(0x03c9, CustomPalette[x][1] >> 2);
+            outportb(0x03c9, CustomPalette[x][2] >> 2);
+        }
+    }
 
     /*** Scene setup ***/
     rtScene.spheres[0].m_origin.m_x = -0.05;
@@ -119,7 +138,7 @@ int main(int argc, char **argv)
     rtScene.spheres[1].m_color[0] = 0xFF;
     rtScene.spheres[1].m_color[1] = 0xFF;
     rtScene.spheres[1].m_color[2] = 0xFF;
-    rtScene.spheres[1].m_reflective = 0;
+    rtScene.spheres[1].m_reflective = 1;
     rtScene.spheres[1].m_refractive = 0;
 
     rtScene.spheres[2].m_origin.m_x = -0.2;
@@ -129,7 +148,7 @@ int main(int argc, char **argv)
     rtScene.spheres[2].m_color[0] = 0x00;
     rtScene.spheres[2].m_color[1] = 0x00;
     rtScene.spheres[2].m_color[2] = 0xDD;
-    rtScene.spheres[2].m_reflective = 1;
+    rtScene.spheres[2].m_reflective = 0;
     rtScene.spheres[2].m_refractive = 0;
 
     rtScene.spheres[3].m_origin.m_x = -0.85;

@@ -156,10 +156,10 @@ int rayTrace(const Ray *r, const Scene *s, const void *currObject, int x, int y)
                 rl.m_origin.m_z = p.m_z;
                 reflectColor = rayTrace(&rl, s, &s->spheres[i], x, y);
 
-                // add reflection to object's color
-                sColor[0] += (double)ACTIVE_PALETTE[reflectColor][0];
-                sColor[1] += (double)ACTIVE_PALETTE[reflectColor][1];
-                sColor[2] += (double)ACTIVE_PALETTE[reflectColor][2];
+                // perfect reflection - don't add colors
+                sColor[0] = (double)ACTIVE_PALETTE[reflectColor][0];
+                sColor[1] = (double)ACTIVE_PALETTE[reflectColor][1];
+                sColor[2] = (double)ACTIVE_PALETTE[reflectColor][2];
                 clamp(sColor);
 
                 pointColor = DITHER_ON ? orderedDither(sColor, x, y) : findColor(sColor);
