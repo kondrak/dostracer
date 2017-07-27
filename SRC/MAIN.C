@@ -35,6 +35,7 @@ int (*ACTIVE_PALETTE)[3] = VGAPalette;
 // cmd line controlled settings
 int GRAYSCALE_ON = 0;
 int GRAYSCALE_PAL_ON = 0;
+int OPTIMIZED_COLOR = 0;
 int VGA_PAL_ON = 0;
 int DITHER_ON  = 0;
 
@@ -95,6 +96,8 @@ int main(int argc, char **argv)
         }
     }
 
+    // use a slightly optimized color search for custom palette provided no other flag is set
+    OPTIMIZED_COLOR = !(DITHER_ON | VGA_PAL_ON | GRAYSCALE_PAL_ON | GRAYSCALE_ON | VGA_PAL_ON);
     setMode(0x13);
 
     // generate and set a grayscale palette

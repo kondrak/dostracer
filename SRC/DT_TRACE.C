@@ -13,6 +13,7 @@ static const double GLASS_REFRACT = 2.0;
 extern int GRAYSCALE_ON;
 extern int GRAYSCALE_PAL_ON;
 extern int DITHER_ON;
+extern int OPTIMIZED_COLOR;
 
 // threshold map for ordered dithering
 #define d(x) x/4.0
@@ -292,6 +293,36 @@ int findColor(const double *srcColor)
     {
         endColor = 255;
         cr = cg = cb = 0.2989 * cr + 0.5870 * cg + 0.1140 * cb;
+    }
+
+    // If we're rendering using custom palette with no effects, we can significantly speed up color search.
+    // Colors in custom palette are grouped (64 shades each), so we need to go through at most 64 entries per RGB set.
+    if(OPTIMIZED_COLOR)
+    {
+        // 0-64 - shades of red
+        if(cg == 0 && cb == 0)
+        {
+            startColor = 0;
+            endColor = 64;
+        }
+        // 64-128 - shades of green
+        else if(cr == 0 && cb == 0)
+        {
+            startColor = 64;
+            endColor = 128;
+        }
+        // 128-192 - shades of blue
+        else if(cr == 0 && cg == 0)
+        {
+            startColor = 128;
+            endColor = 192;
+        }
+        // 192-256 - shades of gray
+        else
+        {
+            startColor = 192;
+            endColor = 256;
+        }
     }
 
     for (i = startColor; i < endColor; i++)
