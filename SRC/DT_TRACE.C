@@ -291,7 +291,7 @@ int findColor(const double *srcColor)
     // utilize full palette if it's set to grayscale and calculate luminance
     if(GRAYSCALE_PAL_ON)
     {
-        endColor = 255;
+        endColor = 256;
         cr = cg = cb = 0.2989 * cr + 0.5870 * cg + 0.1140 * cb;
     }
 
