@@ -158,9 +158,9 @@ int main(int argc, char **argv)
     rtScene.spheres[3].m_origin.m_y = -0.22;
     rtScene.spheres[3].m_origin.m_z = -3.0;
     rtScene.spheres[3].m_radius = 0.05;
-    rtScene.spheres[3].m_color[0] = 0xFF;
+    rtScene.spheres[3].m_color[0] = 0xEE;
     rtScene.spheres[3].m_color[1] = 0x00;
-    rtScene.spheres[3].m_color[2] = 0xFF;
+    rtScene.spheres[3].m_color[2] = 0xEE;
     rtScene.spheres[3].m_reflective = 0;
     rtScene.spheres[3].m_refractive = 0;
 

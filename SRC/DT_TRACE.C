@@ -343,6 +343,7 @@ int findColor(const double *srcColor)
             if (d < 1)
                 return palIdx;
         }
+        else if(OPTIMIZED_COLOR) break;
     }
 
     return palIdx;
