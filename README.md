@@ -8,9 +8,9 @@ Extra command line flags:
 
 <code>-g - render in grayscale (fast, 16 shades of default VGA palette)</code>
 
-<code>-gp - render in grayscale using full 256 shades of gray (slower!)</code>
+<code>-gp - render in grayscale using full 256 shades of gray</code>
 
-<code>-vga - use standard VGA palette (uglier!)</code>
+<code>-vga - use standard VGA palette (uglier and slower!)</code>
 
 <code>-d - enable dithering</code>
 
