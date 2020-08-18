@@ -14,9 +14,9 @@ Extra command line flags:
 
 <code>-d - enable dithering</code>
 
-![Screenshot](http://kondrak.info/images/dostrace/dostrace1.png?raw=true)
-![Screenshot](http://kondrak.info/images/dostrace/dostrace3.png?raw=true)
-![Screenshot](http://kondrak.info/images/dostrace/dostrace4.png?raw=true)
-![Screenshot](http://kondrak.info/images/dostrace/dostrace5.png?raw=true)
-![Screenshot](http://kondrak.info/images/dostrace/dostrace6.png?raw=true)
+![Screenshot](images/dostrace1.png?raw=true)
+![Screenshot](images/dostrace3.png?raw=true)
+![Screenshot](images/dostrace4.png?raw=true)
+![Screenshot](images/dostrace5.png?raw=true)
+![Screenshot](images/dostrace6.png?raw=true)
 
